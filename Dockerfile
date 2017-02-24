@@ -23,7 +23,11 @@ RUN apt-get -yqq update && \
     apt-get -yqq install xvfb tinywm && \
     apt-get -yqq install fonts-ipafont-gothic xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic && \
     apt-get -yqq install python && \
+    apt-get -yqq install x11vnc && \
     rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /root/.vnc && \
+    x11vnc -storepasswd secret ~/.vnc/passwd
 
 # Install Supervisor
 RUN curl -sS -o - https://bootstrap.pypa.io/ez_setup.py | python && \
@@ -63,6 +67,7 @@ ENV CHROMEDRIVER_WHITELISTED_IPS "127.0.0.1"
 ENV CHROMEDRIVER_URL_BASE ''
 
 EXPOSE 4444
+EXPOSE 5900
 
 VOLUME [ "/var/log/supervisor" ]
 
